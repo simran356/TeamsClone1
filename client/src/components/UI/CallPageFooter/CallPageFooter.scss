@@ -1,0 +1,103 @@
+.page-footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 85px;
+    background: #fff;
+    display: flex;
+    z-index: 1;
+    .left{
+        align-items: center;
+        display: flex;
+        width: 350px;
+        height: 100%;
+        .icon-block{
+            display:flex;
+            align-items: center;
+            height: 100%;
+            justify-content: center;
+            padding: 0 20px;
+            .icon{
+                margin-left: 1px;
+                font-size: 20px;
+            }
+            &:hover{
+                cursor:pointer;
+                background:  #eee;
+            }
+        }
+    }
+    .center{
+        width: 100%;
+        display:  flex;
+        align-items: center;
+        justify-content: center;
+        flex:1;
+        .icon-block{
+            background: white;
+            border: solid;
+            width: 50px;
+            height: 50px;
+            border-radius: 80%;
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+            justify-content: center;
+            .icon{
+                color: black;
+                font-size: 20px;
+                &.red{
+                    color:red;
+                }
+            }
+                &:hover{
+                    cursor:pointer;
+                    box-shadow: 0 0 10px rgb(56, 55, 55);
+                }
+                &.red-bg{
+                    background: red;
+                    .icon{
+                        color: white;
+                    }
+                }
+
+            }
+        
+
+    }
+    .right{
+        display:flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 100%;
+        width: 350px;
+        .icon-block{
+            align-items: center;
+            display:flex;
+            justify-content: center;
+            flex-direction: column;
+            height: 100%;
+            width: 150px;
+            color:black;
+            .icon{
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
+            title{
+                font-size: 13px;
+                font-weight: 500;
+                margin:10;
+            }
+            &:hover{
+                cursor: pointer;
+                background : #eee;
+            }
+        }
+    }
+
+
+
+}

@@ -1,0 +1,98 @@
+.message-container{
+    display: flex;
+    position: absolute;
+    top: 0;
+    right:0;
+    background: white;
+    height: 90%;
+    box-sizing: border-box;
+    width: 350px;
+    justify-content: space-between;
+    flex-direction: column;
+    .message-header{
+        padding:30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        h3{
+            margin:0;
+            font-weight: 400;
+        }
+        .icon{
+            cursor:pointer;
+            font-size: 20px;
+        }
+    }
+    .message-header-tabs{
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        .tab{
+            display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
+        width: 100%;
+        
+        p{
+            margin-left: 10px;
+        }
+        &.active{
+            border-bottom: 2px solid blueviolet;
+            color:blueviolet;
+        }
+        &:hover{
+            cursor:pointer;
+            background: rgba(0,121,107,0.039);
+        }
+        }
+    }
+    
+    .chat-section{
+        padding: 20px;
+        flex: 1;
+        overflow-y : scroll;
+        .chat-block{
+            margin-bottom:30px;
+        
+        .sender{
+            font-size: 15px;
+            font-weight: 500;
+        
+        small{
+            margin-left: 5px;
+            font-weight: 300;
+        }
+    }
+    .msg{
+        margin:0;
+        padding-top: 5px;
+        color : #555;
+        font-size:15 px;
+    }
+}
+}
+.send-msg-section{
+    padding: 20px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: #555;
+    input{
+        padding:5px;
+        border:none;
+        outline: none;
+        border-bottom: 1 px solid #eee;
+        width: 80%;
+    }
+    .icon{
+        cursor:pointer;
+        &:hover{
+            color: blueviolet;
+        }
+    }
+}
+}

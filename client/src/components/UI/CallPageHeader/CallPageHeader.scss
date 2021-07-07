@@ -1,0 +1,53 @@
+.frame-header{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    position:absolute;
+    width: 350px;
+    top:0;
+    right:0;
+    background: #fff;
+    border-radius: 0 0 10px;
+    overflow: hidden;
+    .header-items{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        position:relative;
+        height: 50px;
+        width: 350px;
+        flex:1;
+        border-right: 1px solid rgb(245,245,245);
+        .alert-circle-icon{
+            position:absolute;
+            background: red;
+            width: 10px;
+            height: 10px;
+            border-radius: 60%;
+            top: 11px;
+            border: 2px solid #fff;
+            right: 20px;
+        }
+        &.date-block{
+            font-size: 22px;
+            font-weight: 400;
+            color:blueviolet;
+            min-width: 110px;
+        }
+        &.icon-block{
+            .icon{
+                color: gray;
+                font-size:20px;
+                &.profile{
+                    font-size: 30px;
+                    color: #8a2be2;
+                }
+            }
+            &:hover{
+                cursor:pointer;
+                background: #eee;
+            }
+        }
+
+    }
+}

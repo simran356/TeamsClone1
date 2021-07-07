@@ -1,0 +1,10 @@
+.blue {
+  background: #464eb8 !important;
+  color: #fff imp !important;
+  font-weight: 500 !important;
+  width: 30%;
+  height: 50px;
+  &:hover {
+    background: #7b83eb !important;
+  }
+}
