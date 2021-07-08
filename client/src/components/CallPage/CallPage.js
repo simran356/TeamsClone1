@@ -20,7 +20,7 @@ import CallPageHeader from "./../UI/CallPageHeader/CallPageHeader";
 import './CallPage.scss';
 let peer = null;
 
-const socket = io.connect("http://localhost:4000/");
+const socket = io.connect(process.env.REACT_APP_BASE_URL);
 const initialState = [];
 
 

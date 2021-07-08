@@ -1,11 +1,11 @@
 const MessageListReducer = (state, action) => {
-    let draftstate = [...state];
+    let draftState = [...state];
     switch (action.type) {
-        case "addMessage":
-            return [...draftstate, action.payload];
-        default:
-            return state;
+      case "addMessage":
+        return [...draftState, action.payload];
+      default:
+        return state;
     }
-};
-
-export default MessageListReducer;
+  };
+  
+  export default MessageListReducer;
