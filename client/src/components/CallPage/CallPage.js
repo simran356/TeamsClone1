@@ -24,7 +24,7 @@ const initialState = [];
 const CallPage = () => {
   const history = useHistory();
   let { id } = useParams();
-  const isAdmin = window.location.hash ==="#init" ? true : false;
+  const isAdmin = window.location.hash === "#init" ? true : false;
   const url = `${window.location.origin}${window.location.pathname}`;
   let alertTimeout = null;
 
@@ -57,7 +57,7 @@ const CallPage = () => {
       }
     });
   }, []);
-  
+
 
   const getICServer = async () => {
     const response = await getRequest(`${BASE_URL}${GET_ICE_SERVER}`);
@@ -246,8 +246,8 @@ const CallPage = () => {
         isAudio={isAudio}
         toggleAudio={toggleAudio}
         disconnectCall={disconnectCall}
-        isVideo = {isVideo}
-        toggleVideo = {toggleVideo}
+        isVideo={isVideo}
+        toggleVideo={toggleVideo}
       />
 
       {isAdmin && meetInfoPopup && (

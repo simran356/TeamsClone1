@@ -28,6 +28,7 @@ const Message = ({ setIsMessenger, sendMsg, messageList }) => {
         setMsg("");
     };
     return (
+
         <div className="message-container">
             <div className="message-header">
                 <h3> Meeting Details </h3>
@@ -72,7 +73,7 @@ const Message = ({ setIsMessenger, sendMsg, messageList }) => {
                     onClick={handleSendMsg}
                 />
             </div>
-        </div> 
+        </div>
     );
 };
 export default Message;

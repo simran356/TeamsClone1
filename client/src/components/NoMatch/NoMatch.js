@@ -11,13 +11,13 @@ const NoMatch = () => {
                     <center>
                         <Link className="btn blue" to="/">
                             Return to home screen
-                </Link>
+                        </Link>
                     </center>
 
                 </div>
 
             </div>
         </div>
-    ) 
+    )
 }
 export default NoMatch;
