@@ -1,28 +1,25 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import MessageListReducer from "./../../reducers/MessageListReducer";
 import { getRequest, postRequest } from "./../../utils/apiRequests";
 import {
   BASE_URL,
   GET_CALL_ID,
+  GET_ICE_SERVER,
   SAVE_CALL_ID,
 } from "./../../utils/apiEndpoints";
-
 import io from "socket.io-client";
 import Peer from "simple-peer";
+import "./CallPage.scss";
 import Message from "./../UI/Message/Message";
-import Alert from "./../UI/Alert/Alert";
-import MeetingInfo from "./../UI/MeetingInfo/MeetingInfo";
-import CallPageFooter from "./../UI/CallPageFooter/CallPageFooter";
-import CallPageHeader from "./../UI/CallPageHeader/CallPageHeader";
+import MessageListReducer from "../../reducers/MessageListReducer";
+import Alert from "../UI/Alert/Alert";
+import MeetingInfo from "../UI/MeetingInfo/MeetingInfo";
+import CallPageFooter from "../UI/CallPageFooter/CallPageFooter";
+import CallPageHeader from "../UI/CallPageHeader/CallPageHeader";
 
-
-import './CallPage.scss';
 let peer = null;
-
 const socket = io.connect(process.env.REACT_APP_BASE_URL);
 const initialState = [];
-
 
 const CallPage = () => {
   const history = useHistory();
@@ -36,27 +33,37 @@ const CallPage = () => {
     initialState
   );
 
+  const iceServers = useRef([]);
+
   const [streamObj, setStreamObj] = useState();
-  const [meetInfoPopup, setMeetInfoPopup] = useState(false);
   const [screenCastStream, setScreenCastStream] = useState();
+  const [meetInfoPopup, setMeetInfoPopup] = useState(false);
   const [isPresenting, setIsPresenting] = useState(false);
   const [isMessenger, setIsMessenger] = useState(false);
   const [messageAlert, setMessageAlert] = useState({});
   const [isAudio, setIsAudio] = useState(true);
   const [isVideo, setIsVideo] = useState(true);
-   
+
   useEffect(() => {
     if (isAdmin) {
-      setMeetInfoPopup(true);  
+      setMeetInfoPopup(true);
+      getICServer();
+    } else {
+      initWebRTC();
     }
-      
-    initWebRTC();
-    socket.on("code",(data)=>{
-      peer.signal(data);
+    socket.on("code", (data) => {
+      if (data.url === url) {
+        peer.signal(data.code);
+      }
     });
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+
+  const getICServer = async () => {
+    const response = await getRequest(`${BASE_URL}${GET_ICE_SERVER}`);
+    iceServers.current = response;
+    initWebRTC();
+  }
 
   const getRecieverCode = async () => {
     const response = await getRequest(`${BASE_URL}${GET_CALL_ID}/${id}`);
@@ -65,9 +72,6 @@ const CallPage = () => {
     }
   };
 
-  
-
-
   const initWebRTC = () => {
     navigator.mediaDevices
       .getUserMedia({
@@ -75,40 +79,47 @@ const CallPage = () => {
         audio: true,
       })
       .then((stream) => {
-       setStreamObj(stream);
-       
+        setStreamObj(stream);
 
-        peer = new Peer({
-          initiator: isAdmin,
-          trickle: false,
-          stream: stream,
-        });
- 
+        if (isAdmin && iceServers.current && iceServers.current.length) {
+          peer = new Peer({
+            initiator: isAdmin,
+            trickle: false,
+            stream: stream,
+            config: {
+              iceServers: iceServers.current
+            }
+          });
+        }
+
         if (!isAdmin) {
+          peer = new Peer({
+            initiator: false,
+            trickle: false,
+            stream: stream,
+          });
           getRecieverCode();
         }
 
-       
-
         peer.on("signal", async (data) => {
           if (isAdmin) {
+            console.log("data", data);
             let payload = {
               id,
               signalData: data,
             };
             await postRequest(`${BASE_URL}${SAVE_CALL_ID}`, payload);
           } else {
-            socket.emit("code", data, (_cbData) => {
+            socket.emit("code", { code: data, url }, (cbData) => {
               console.log("code sent");
             });
+
           }
         });
-        
 
-       peer.on("connect", () => {
-          console.log('peer-connected');
-          
-       });
+        peer.on("connect", () => {
+          // wait for 'connect' event before using the data channel
+        });
 
         peer.on("data", (data) => {
           clearTimeout(alertTimeout);
@@ -139,8 +150,6 @@ const CallPage = () => {
           }, 10000);
         });
 
-
-
         peer.on("stream", (stream) => {
           // got remote video stream, now let's show it in a video tag
           let video = document.querySelector("video");
@@ -153,11 +162,9 @@ const CallPage = () => {
 
           video.play();
         });
-        
+
       })
-      .catch(() => {
-        console.log('error');
-      });
+      .catch(() => { });
   };
 
   const sendMsg = (msg) => {
@@ -171,7 +178,6 @@ const CallPage = () => {
       },
     });
   };
-
 
   const screenShare = () => {
     navigator.mediaDevices
@@ -194,9 +200,8 @@ const CallPage = () => {
       });
   };
 
-  
   const stopScreenShare = () => {
-    screenCastStream.getVideoTracks().forEach((track) =>{
+    screenCastStream.getVideoTracks().forEach(function (track) {
       track.stop();
     });
     peer.replaceTrack(
@@ -206,7 +211,6 @@ const CallPage = () => {
     );
     setIsPresenting(false);
   };
-
 
   const toggleAudio = (value) => {
     streamObj.getAudioTracks()[0].enabled = value;
@@ -218,39 +222,37 @@ const CallPage = () => {
     setIsVideo(value);
   };
 
+
   const disconnectCall = () => {
     peer.destroy();
     history.push("/");
     window.location.reload();
   };
 
-
-      
-
   return (
     <div className="callpage-container">
       <video className="video-container" src="" controls></video>
+
       <CallPageHeader
-      isMessenger={isMessenger}
-      setIsMessenger={setIsMessenger}
-      messageAlert={messageAlert}
-      setMessageAlert={setMessageAlert}
+        isMessenger={isMessenger}
+        setIsMessenger={setIsMessenger}
+        messageAlert={messageAlert}
+        setMessageAlert={setMessageAlert}
       />
-     
-      <CallPageFooter 
-      isPresenting={isPresenting}
-      stopScreenShare={stopScreenShare}
-      screenShare={screenShare}
-      isAudio= {isAudio}
-      toggleAudio={toggleAudio}
-      disconnectCall={disconnectCall}
-      isVideo = {isVideo}
-      toggleVideo= {toggleVideo}
+      <CallPageFooter
+        isPresenting={isPresenting}
+        stopScreenShare={stopScreenShare}
+        screenShare={screenShare}
+        isAudio={isAudio}
+        toggleAudio={toggleAudio}
+        disconnectCall={disconnectCall}
+        isVideo = {isVideo}
+        toggleVideo = {toggleVideo}
       />
-      {(isAdmin && meetInfoPopup)&&( 
-      <MeetingInfo setMeetInfoPopup={setMeetInfoPopup} url={url} />
+
+      {isAdmin && meetInfoPopup && (
+        <MeetingInfo setMeetInfoPopup={setMeetInfoPopup} url={url} />
       )}
-      
       {isMessenger ? (
         <Message
           setIsMessenger={setIsMessenger}
@@ -263,8 +265,4 @@ const CallPage = () => {
     </div>
   );
 };
-    
 export default CallPage;
-  
-
-
