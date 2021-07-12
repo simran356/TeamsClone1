@@ -1,3 +1,4 @@
+//import all necessary packages
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faVideo,
@@ -12,11 +13,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import './CallPageFooter.scss';
 
+// collaborate call page footer items
 const CallPageFooter = ({
     isPresenting,
     stopScreenShare,
     screenShare,
-    isAudio,  
+    isAudio,
     toggleAudio,
     disconnectCall,
     isVideo,
@@ -32,28 +34,28 @@ const CallPageFooter = ({
             </div>
             <div className="center">
                 <div className={`icon-block ${!isVideo ? "red-bg" : null}`}
-                onClick={() => toggleVideo (!isVideo)}
+                    onClick={() => toggleVideo(!isVideo)}
                 >
-                    <FontAwesomeIcon className="icon" 
-                    icon={isVideo ? faVideo: faVideoSlash} />
+                    <FontAwesomeIcon className="icon"
+                        icon={isVideo ? faVideo : faVideoSlash} />
 
                 </div>
 
                 <div className={`icon-block ${!isAudio ? "red-bg" : null}`}
-                 onClick={() => toggleAudio(!isAudio)}
+                    onClick={() => toggleAudio(!isAudio)}
                 >
                     <FontAwesomeIcon className="icon"
-                     icon={isAudio ? faMicrophone : faMicrophoneSlash}
-                      />
+                        icon={isAudio ? faMicrophone : faMicrophoneSlash}
+                    />
 
                 </div>
-                <div className="icon-block" onClick= {disconnectCall}>
+                <div className="icon-block" onClick={disconnectCall}>
                     <FontAwesomeIcon className="icon red" icon={faPhone} />
                 </div>
             </div>
 
-             
-                <div className="right">
+
+            <div className="right">
                 <div className="icon-block">
                     <FontAwesomeIcon className="icon red" icon={faClosedCaptioning} />
                     <p className="title"> Turn on subtitles </p>
@@ -73,8 +75,8 @@ const CallPageFooter = ({
 
             </div>
         </div>
-        
-   );
+
+    );
 };
 
 export default CallPageFooter;

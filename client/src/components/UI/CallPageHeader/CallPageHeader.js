@@ -29,6 +29,8 @@ const CallPageHeader = ({
 
     }, []);
 
+    // add elements to call page header
+
     return (
         <div className="frame-header">
             <div className="header-items icon-block">
@@ -46,9 +48,9 @@ const CallPageHeader = ({
             <div className="header-items date-block">{currentTime} </div>
             <div className="header-items icon-block">
                 <FontAwesomeIcon className="profile" icon={faUserCircle} />
-                </div>
             </div>
-        
+        </div>
+
     );
 };
 export default CallPageHeader;

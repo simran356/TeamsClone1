@@ -1,3 +1,4 @@
+//import all necesary files
 import { useEffect, useReducer, useRef, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { getRequest, postRequest } from "./../../utils/apiRequests";
@@ -24,6 +25,7 @@ const initialState = [];
 const CallPage = () => {
   const history = useHistory();
   let { id } = useParams();
+  //if init is present, only then its an admin
   const isAdmin = window.location.hash === "#init" ? true : false;
   const url = `${window.location.origin}${window.location.pathname}`;
   let alertTimeout = null;
@@ -132,6 +134,8 @@ const CallPage = () => {
             },
           });
 
+          // to set the message alert
+
           setMessageAlert({
             alert: true,
             isPopup: true,
@@ -151,13 +155,13 @@ const CallPage = () => {
         });
 
         peer.on("stream", (stream) => {
-          // got remote video stream, now let's show it in a video tag
+          // got remote video stream and  show it in a video tag
           let video = document.querySelector("video");
 
           if ("srcObject" in video) {
             video.srcObject = stream;
           } else {
-            video.src = window.URL.createObjectURL(stream); // for older browsers
+            video.src = window.URL.createObjectURL(stream);
           }
 
           video.play();
@@ -166,7 +170,7 @@ const CallPage = () => {
       })
       .catch(() => { });
   };
-
+  //send msg function for the chat functionality
   const sendMsg = (msg) => {
     peer.send(msg);
     messageListReducer({
@@ -178,7 +182,7 @@ const CallPage = () => {
       },
     });
   };
-
+  // screen sharing function
   const screenShare = () => {
     navigator.mediaDevices
       .getDisplayMedia({ cursor: true })
@@ -199,7 +203,7 @@ const CallPage = () => {
         setIsPresenting(true);
       });
   };
-
+  // stopping the screen share functionality
   const stopScreenShare = () => {
     screenCastStream.getVideoTracks().forEach(function (track) {
       track.stop();
@@ -211,18 +215,19 @@ const CallPage = () => {
     );
     setIsPresenting(false);
   };
-
+  // to mute and unmunte the audio
   const toggleAudio = (value) => {
     streamObj.getAudioTracks()[0].enabled = value;
     setIsAudio(value);
   };
 
+  // to switch on and off the camera
   const toggleVideo = (value) => {
     streamObj.getVideoTracks()[0].enabled = value;
     setIsVideo(value);
   };
 
-
+  // to disconnect a call
   const disconnectCall = () => {
     peer.destroy();
     history.push("/");

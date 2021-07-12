@@ -17,8 +17,7 @@ app.use([
   Routes,
 ]);
 
-// const io = (module.exports.io = require("socket.io")(server));
-// This is missing in the video.
+
 const io = (module.exports.io = require('socket.io')(server, {
     cors: {
         origin: '*',
@@ -29,6 +28,7 @@ io.on("connection", socketManager);
 
 var cachedToken = null;
 
+// to get a new token
 function getNewToken () {
   twilio.tokens.create({}, function(err, token) {
     if (!err && token) {
@@ -53,12 +53,13 @@ app.get('/api/get-icserver', function (req, res) {
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
   app.use(express.static(path.join(__dirname, 'client/build')));
-// Handle React routing, return all requests to React app
+// Handling React routing and return all requests to React app
   app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
 
+//ensuring if redis-server is working or not
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

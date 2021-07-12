@@ -4,6 +4,7 @@ import HomePage from "./components/HomePage/HomePage";
 import CallPage from "./components/CallPage/CallPage";
 import NoMatch from "./components/NoMatch/NoMatch";
 
+//linking different pages
 function App() {
   return (
     <Router>

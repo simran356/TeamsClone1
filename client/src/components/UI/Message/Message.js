@@ -17,6 +17,8 @@ const Message = ({ setIsMessenger, sendMsg, messageList }) => {
         setMsg(e.target.value);
     };
 
+    //on pressing enter from the keyboard , we can send the message
+
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             sendMsg(msg);
@@ -27,6 +29,8 @@ const Message = ({ setIsMessenger, sendMsg, messageList }) => {
         sendMsg(msg);
         setMsg("");
     };
+
+    //setting up the message container
     return (
 
         <div className="message-container">

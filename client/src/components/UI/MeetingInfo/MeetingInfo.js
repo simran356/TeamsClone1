@@ -6,6 +6,8 @@ import {
     faShieldAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import './MeetingInfo.scss';
+
+//setting the meeting info grid
 const MeetingInfo = ({ setMeetInfoPopup, url }) => {
     return (
         <div className="meeting-information">
@@ -18,25 +20,25 @@ const MeetingInfo = ({ setMeetInfoPopup, url }) => {
             </div>
             <button className="add-participant-btn">
                 <FontAwesomeIcon className="icon" icon={faUser} />
-                 Add Participants
-             </button>
+                Add Participants
+            </button>
             <p className="info-text">
                 Share meeting invite
-             </p>
+            </p>
             <div className="meet-link">
                 <span>{url}</span>
                 <FontAwesomeIcon className="icon" icon={faCopy} onClick={() => navigator.clipboard.writeText(url)} />
-                
+
             </div>
             <div className="permit">
                 <FontAwesomeIcon className="icon" icon={faShieldAlt} />
                 <p className="small-text">
                     Permission needs to be granted by host for others to join
-             </p>
+                </p>
             </div>
             <p className="small-text">
                 Joined as simran@gmail.com
-             </p>
+            </p>
         </div>
     );
 };

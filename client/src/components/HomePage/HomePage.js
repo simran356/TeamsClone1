@@ -13,6 +13,7 @@ const HomePage = () => {
         //redirect it to the call page
         history.push(`/${uid}#init`);
     };
+    //designing the body of the home page
     return (
         <div className="home-page">
             <Header />
